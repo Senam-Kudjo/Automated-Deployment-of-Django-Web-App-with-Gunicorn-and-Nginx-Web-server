@@ -5,20 +5,27 @@ function deploy(){
 #.....................................
 cd /var/www/html
 rm -rf *
-#read -p "Paste the git url of the Django web app you want to deploy here : " gitURL
+read -p "Paste the git url of the Django web app you want to deploy here : " gitURL
 #read -p "Enter the IP of the server you want to host your Django web app on : " serverIP
-#git clone $gitURL
-git clone https://github.com/Senam-Kudjo/DiDaPay.git web-app
-# Get the directory name of the cloned repository
-#repo_name=$(basename "$gitURL")
+#Your Django app will be given the name "web-app" in the path "/var/www/html"
+
 repo_name="web-app"
+
+echo "Your Django app will be given the name 'web-app' in the path (/var/www/html)"
+
+git clone $gitURL $repo_name
+
 #.....................................
 
 #....................................
+#	Installing All The Needed Packages and Dependencies
+apt install -y nginx
 apt install -y python3-venv
 python3 -m venv django_env
 source django_env/bin/activate
 pip install django
+pip install python-dotenv
+pip install requests
 pip install gunicorn
 PID=$(lsof -t -i :8000)
 sudo kill $PID &
@@ -204,8 +211,6 @@ EOF
 
 #..................................
 cd /var/www/html/$repo_name
-pip install python-dotenv
-pip install requests
 pwd
 #...................................
 
