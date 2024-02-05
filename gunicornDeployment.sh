@@ -1,7 +1,8 @@
 #!/bin/bash
 
 function deploy(){
-
+apt update
+apt install git
 #.....................................
 cd /var/www/html
 rm -rf *
